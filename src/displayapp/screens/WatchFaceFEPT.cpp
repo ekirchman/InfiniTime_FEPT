@@ -19,7 +19,8 @@ WatchFaceFEPT::WatchFaceFEPT(Controllers::DateTime& dateTimeController,
                                    Controllers::NotificationManager& notificationManager,
                                    Controllers::Settings& settingsController,
                                    Controllers::HeartRateController& heartRateController,
-                                   Controllers::MotionController& motionController)
+                                   Controllers::MotionController& motionController,
+                                   Controllers::FS& filesystem)
   : currentDateTime {{}},
     dateTimeController {dateTimeController},
     notificationManager {notificationManager},
@@ -27,6 +28,21 @@ WatchFaceFEPT::WatchFaceFEPT(Controllers::DateTime& dateTimeController,
     heartRateController {heartRateController},
     motionController {motionController},
     statusIcons(batteryController, bleController) {
+
+  lfs_file f = {};
+
+  //Add enemy
+  enemy_img = lv_img_create(lv_scr_act(), nullptr);
+  /* for now the lv_img_conv.py tool can't use 'P' files as alpha images, PILLOW is required to convert it to RGBA first*/
+  if (filesystem.FileOpen(&f, "/images/FEPT/Enemy.bin", LFS_O_RDONLY) >= 0) {
+      lv_img_set_src(enemy_img, "F:/images/FEPT/Enemy.bin");
+      filesystem.FileClose(&f);
+  }
+
+  if(enemy_img != nullptr){
+    lv_img_set_auto_size(enemy_img, true);
+  }
+  lv_obj_align(enemy_img, nullptr, LV_ALIGN_IN_LEFT_MID, 0, 60);
 
   statusIcons.Create();
 
@@ -154,3 +170,25 @@ void WatchFaceFEPT::Refresh() {
     lv_obj_realign(stepIcon);
   }
 }
+/*
+bool WatchFaceFEPT::IsAvailable(Pinetime::Controllers::FS& filesystem) {
+  lfs_file file = {};
+
+  if (filesystem.FileOpen(&file, "/fonts/lv_font_dots_40.bin", LFS_O_RDONLY) < 0) {
+    return false;
+  }
+
+  filesystem.FileClose(&file);
+  if (filesystem.FileOpen(&file, "/fonts/7segments_40.bin", LFS_O_RDONLY) < 0) {
+    return false;
+  }
+
+  filesystem.FileClose(&file);
+  if (filesystem.FileOpen(&file, "/fonts/7segments_115.bin", LFS_O_RDONLY) < 0) {
+    return false;
+  }
+
+  filesystem.FileClose(&file);
+  return true;
+}
+*/

@@ -32,10 +32,13 @@ namespace Pinetime {
                          Controllers::NotificationManager& notificationManager,
                          Controllers::Settings& settingsController,
                          Controllers::HeartRateController& heartRateController,
-                         Controllers::MotionController& motionController);
+                         Controllers::MotionController& motionController,
+                         Controllers::FS& filesystem);
         ~WatchFaceFEPT() override;
 
         void Refresh() override;
+
+        // static bool IsAvailable(Pinetime::Controllers::FS& filesystem);
 
       private:
         uint8_t displayedHour = -1;
@@ -62,6 +65,8 @@ namespace Pinetime {
         lv_obj_t* stepValue;
         lv_obj_t* notificationIcon;
 
+         lv_obj_t* enemy_img = nullptr;
+
         Controllers::DateTime& dateTimeController;
         Controllers::NotificationManager& notificationManager;
         Controllers::Settings& settingsController;
@@ -85,10 +90,12 @@ namespace Pinetime {
                                              controllers.notificationManager,
                                              controllers.settingsController,
                                              controllers.heartRateController,
-                                             controllers.motionController);
+                                             controllers.motionController,
+                                             controllers.filesystem);
       };
 
-      static bool IsAvailable(Pinetime::Controllers::FS& /*filesystem*/) {
+      static bool IsAvailable(Pinetime::Controllers::FS& /*filesystem/*/) {
+        // return Screens::WatchFaceFEPT::IsAvailable(filesystem);
         return true;
       }
     };
