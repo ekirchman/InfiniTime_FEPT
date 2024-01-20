@@ -26,5 +26,12 @@
       "output_format": "bin",
       "binary_format": "ARGB8565_RBSWAP",
       "target_path": "/images/FEPT/"
+   },
+   "LYN00" : {
+      "sources": "images/FEPT/LYN00.png",
+      "color_format": "CF_TRUE_COLOR_ALPHA",
+      "output_format": "bin",
+      "binary_format": "ARGB8565_RBSWAP",
+      "target_path": "/images/FEPT/"
    }
 }

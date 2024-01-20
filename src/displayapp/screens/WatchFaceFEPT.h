@@ -65,7 +65,8 @@ namespace Pinetime {
         lv_obj_t* stepValue;
         lv_obj_t* notificationIcon;
 
-         lv_obj_t* enemy_img = nullptr;
+        lv_obj_t* enemy_img = nullptr;
+        lv_obj_t* hero_img = nullptr;
 
         Controllers::DateTime& dateTimeController;
         Controllers::NotificationManager& notificationManager;

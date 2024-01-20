@@ -42,7 +42,21 @@ WatchFaceFEPT::WatchFaceFEPT(Controllers::DateTime& dateTimeController,
   if(enemy_img != nullptr){
     lv_img_set_auto_size(enemy_img, true);
   }
-  lv_obj_align(enemy_img, nullptr, LV_ALIGN_IN_LEFT_MID, 0, 60);
+  lv_obj_align(enemy_img, nullptr, LV_ALIGN_IN_LEFT_MID, 0, 0);
+
+  //Add hero
+  hero_img = lv_img_create(lv_scr_act(), nullptr);
+  /* for now the lv_img_conv.py tool can't use 'P' files as alpha images, PILLOW is required to convert it to RGBA first*/
+  if (filesystem.FileOpen(&f, "/images/FEPT/LYN00.bin", LFS_O_RDONLY) >= 0) {
+      lv_img_set_src(hero_img, "F:/images/FEPT/LYN00.bin");
+      filesystem.FileClose(&f);
+  }
+
+  if(hero_img != nullptr){
+    lv_img_set_auto_size(hero_img, true);
+  }
+  lv_obj_align(hero_img, nullptr, LV_ALIGN_IN_RIGHT_MID, 0, 0);
+
 
   statusIcons.Create();
 
@@ -119,10 +133,10 @@ void WatchFaceFEPT::Refresh() {
       }
       lv_label_set_text(label_time_ampm, ampmChar);
       lv_label_set_text_fmt(label_time, "%2d:%02d", hour, minute);
-      lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_RIGHT_MID, 0, 0);
+      lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, 0, 0);
     } else {
       lv_label_set_text_fmt(label_time, "%02d:%02d", hour, minute);
-      lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+      lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 0);
     }
 
     currentDate = std::chrono::time_point_cast<days>(currentDateTime.Get());
