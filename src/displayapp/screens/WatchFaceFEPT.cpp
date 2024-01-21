@@ -185,9 +185,25 @@ void WatchFaceFEPT::Refresh() {
     lv_obj_realign(stepIcon);
   }
 
-  if (fs_ptr->FileOpen(f_ptr, "/images/FEPT/Enemy.bin", LFS_O_RDONLY) >= 0) {
-      lv_img_set_src(hero_img, "F:/images/FEPT/Enemy.bin");
-      fs_ptr->FileClose(f_ptr);
+  uint8_t second = dateTimeController.Seconds();
+
+  if(second != msecond){
+    if(hero_img_cnt == 0){
+      if (fs_ptr->FileOpen(f_ptr, "/images/FEPT/LYN00.bin", LFS_O_RDONLY) >= 0) {
+              lv_img_set_src(hero_img, "F:/images/FEPT/LYN00.bin");
+              fs_ptr->FileClose(f_ptr);
+      }
+    }else{
+      if (fs_ptr->FileOpen(f_ptr, "/images/FEPT/Enemy.bin", LFS_O_RDONLY) >= 0) {
+          lv_img_set_src(hero_img, "F:/images/FEPT/Enemy.bin");
+          fs_ptr->FileClose(f_ptr);
+      }
+    }
+    hero_img_cnt++;
+    if(hero_img_cnt > 1){
+      hero_img_cnt = 0;
+    }
+    msecond = second;
   }
 
 }
