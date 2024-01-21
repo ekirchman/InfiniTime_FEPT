@@ -2,6 +2,7 @@
 
 #include <lvgl/lvgl.h>
 #include <cstdio>
+#include "WatchFaceFEPT.h"
 #include "displayapp/screens/NotificationIcon.h"
 #include "displayapp/screens/Symbols.h"
 #include "components/battery/BatteryController.h"
@@ -30,6 +31,8 @@ WatchFaceFEPT::WatchFaceFEPT(Controllers::DateTime& dateTimeController,
     statusIcons(batteryController, bleController) {
 
   lfs_file f = {};
+  f_ptr = &f;
+  fs_ptr = &filesystem;
 
   //Add enemy
   enemy_img = lv_img_create(lv_scr_act(), nullptr);
@@ -44,6 +47,7 @@ WatchFaceFEPT::WatchFaceFEPT(Controllers::DateTime& dateTimeController,
   }
   lv_obj_align(enemy_img, nullptr, LV_ALIGN_IN_LEFT_MID, 0, 0);
 
+
   //Add hero
   hero_img = lv_img_create(lv_scr_act(), nullptr);
   /* for now the lv_img_conv.py tool can't use 'P' files as alpha images, PILLOW is required to convert it to RGBA first*/
@@ -52,9 +56,6 @@ WatchFaceFEPT::WatchFaceFEPT(Controllers::DateTime& dateTimeController,
       filesystem.FileClose(&f);
   }
 
-  if(hero_img != nullptr){
-    lv_img_set_auto_size(hero_img, true);
-  }
   lv_obj_align(hero_img, nullptr, LV_ALIGN_IN_RIGHT_MID, 0, 0);
 
 
@@ -183,6 +184,12 @@ void WatchFaceFEPT::Refresh() {
     lv_obj_realign(stepValue);
     lv_obj_realign(stepIcon);
   }
+
+  if (fs_ptr->FileOpen(f_ptr, "/images/FEPT/Enemy.bin", LFS_O_RDONLY) >= 0) {
+      lv_img_set_src(hero_img, "F:/images/FEPT/Enemy.bin");
+      fs_ptr->FileClose(f_ptr);
+  }
+
 }
 /*
 bool WatchFaceFEPT::IsAvailable(Pinetime::Controllers::FS& filesystem) {

@@ -11,6 +11,7 @@
 #include "utility/DirtyValue.h"
 #include "displayapp/Apps.h"
 
+
 namespace Pinetime {
   namespace Controllers {
     class Settings;
@@ -67,6 +68,10 @@ namespace Pinetime {
 
         lv_obj_t* enemy_img = nullptr;
         lv_obj_t* hero_img = nullptr;
+        lfs_file* f_ptr = nullptr;
+        Controllers::FS* fs_ptr = nullptr;
+        uint8_t hero_img_cnt = 0;
+        uint8_t msecond = 0;
 
         Controllers::DateTime& dateTimeController;
         Controllers::NotificationManager& notificationManager;
